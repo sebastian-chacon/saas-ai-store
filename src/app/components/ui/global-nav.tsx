@@ -6,7 +6,7 @@ import {
   Users, Settings, Eye, Sparkles 
 } from "lucide-react";
 
-type View = "landing" | "dashboard" | "products" | "store" | "templates";
+type View = "landing" | "dashboard" | "products" | "store" | "templates" | "customers" | "orders" | "settings";
 
 interface GlobalNavProps {
   currentView: View;
