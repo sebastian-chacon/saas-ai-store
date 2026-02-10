@@ -1,15 +1,15 @@
 "use client";
 import { useState } from "react";
-import { Toaster } from "./components/ui/sonner";
-import AITemplateGenerator from "./components/ai-template-generator";
-import StorePreview from "./components/store-preview";
-import ProductManager from "./components/product-manager";
-import Dashboard from "./components/dashboard";
-import LandingPage from "./components/landing-page";
-import BackgroundLayout from "./components/ui/background-layout";
-import GlobalNav from "./components/ui/global-nav";
-import CustomerManager from "./components/CustomerManager";
-import OrderManager from "./components/OrderManager";
+import { Toaster } from "@/components/ui/sonner";
+import AITemplateGenerator from "@/components/ai-template-generator";
+import StorePreview from "@/components/store-preview";
+import ProductManager from "@/components/product-manager";
+import Dashboard from "@/components/dashboard";
+import LandingPage from "@/components/landing-page";
+import BackgroundLayout from "@/components/ui/background-layout";
+import GlobalNav from "@/components/ui/global-nav";
+import CustomerManager from "@/components/customer-manager";
+import OrderManager from "@/components/order-manager";
 
 type View = "landing" | "dashboard" | "products" | "store" | "templates" | "customers" | "orders" | "settings";
 
@@ -46,7 +46,7 @@ export default function App() {
         toastOptions={{
           style: {
             background: "rgba(15, 23, 42, 0.8)",
-            backdropFilter: "blur(8px)", 
+            backdropFilter: "blur(8px)",
             border: "1px solid rgba(255, 255, 255, 0.1)",
             color: "#fff",
           },

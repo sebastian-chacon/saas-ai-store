@@ -1,6 +1,7 @@
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
-import { Store, ShoppingCart, TrendingUp, Palette, CreditCard, BarChart3, Globe, Lock, Sparkles, Rocket, YoutubeIcon } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+import { Store, ShoppingCart, TrendingUp, Palette, CreditCard, BarChart3, Globe, Lock, Sparkles, Rocket, YoutubeIcon, Menu } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { motion } from "framer-motion";
 
@@ -58,16 +59,51 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
             <a href="#pricing" className="text-slate-300 hover:text-white transition-colors">Precios</a>
             <a href="#templates" className="text-slate-300 hover:text-white transition-colors">Plantillas</a>
           </nav>
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-3"
-          >
-            <Button variant="ghost" className="text-white hover:bg-white/10">Iniciar sesión</Button>
-            <Button onClick={onGetStarted} className="bg-linear-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 shadow-lg shadow-purple-500/50">
-              Comenzar gratis
-            </Button>
-          </motion.div>
+
+          <div className="flex items-center gap-3">
+            {/* Mobile Menu */}
+            <div className="md:hidden">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" className="text-white hover:bg-white/10" size="icon">
+                    <Menu className="w-6 h-6" />
+                    <span className="sr-only">Menú</span>
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-[300px] border-l border-white/10 bg-slate-950/80 backdrop-blur-xl p-6">
+                  <SheetTitle className="text-left text-xl font-bold bg-linear-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent mb-8">
+                    MiTienda
+                  </SheetTitle>
+                  <div className="flex flex-col gap-6">
+                    <nav className="flex flex-col gap-4">
+                      <a href="#features" className="text-lg text-slate-300 hover:text-white transition-colors">Características</a>
+                      <a href="#pricing" className="text-lg text-slate-300 hover:text-white transition-colors">Precios</a>
+                      <a href="#templates" className="text-lg text-slate-300 hover:text-white transition-colors">Plantillas</a>
+                    </nav>
+                    <div className="flex flex-col gap-4 mt-4">
+                      <Button variant="ghost" className="justify-start text-white hover:bg-white/10 px-0">
+                        Iniciar sesión
+                      </Button>
+                      <Button onClick={onGetStarted} className="bg-linear-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 shadow-lg shadow-purple-500/50">
+                        Comenzar gratis
+                      </Button>
+                    </div>
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="hidden md:flex items-center gap-3"
+            >
+              <Button variant="ghost" className="text-white hover:bg-white/10">Iniciar sesión</Button>
+              <Button onClick={onGetStarted} className="bg-linear-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 shadow-lg shadow-purple-500/50">
+                Comenzar gratis
+              </Button>
+            </motion.div>
+          </div>
         </div>
       </header>
 
@@ -253,9 +289,8 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -8 }}
               >
-                <Card className={`p-8 h-full bg-slate-900/50 backdrop-blur-xl border-white/10 ${
-                  plan.popular ? 'border-purple-500 shadow-2xl shadow-purple-500/50' : ''
-                } transition-all`}>
+                <Card className={`p-8 h-full bg-slate-900/50 backdrop-blur-xl border-white/10 ${plan.popular ? 'border-purple-500 shadow-2xl shadow-purple-500/50' : ''
+                  } transition-all`}>
                   {plan.popular && (
                     <div className="bg-linear-to-r from-purple-600 to-cyan-600 text-white text-sm font-semibold px-3 py-1 rounded-full inline-block mb-4">
                       Más popular
@@ -276,13 +311,12 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
                       </li>
                     ))}
                   </ul>
-                  <Button 
+                  <Button
                     onClick={onGetStarted}
-                    className={`w-full ${
-                      plan.popular
-                        ? 'bg-linear-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 shadow-lg shadow-purple-500/50'
-                        : 'border-white/20 text-white hover:bg-white/10'
-                    }`}
+                    className={`w-full ${plan.popular
+                      ? 'bg-linear-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 shadow-lg shadow-purple-500/50'
+                      : 'border-white/20 text-white hover:bg-white/10'
+                      }`}
                     variant={plan.popular ? "default" : "outline"}
                   >
                     {plan.cta}
