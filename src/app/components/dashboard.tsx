@@ -2,13 +2,9 @@ import { motion } from "framer-motion";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { 
-  Store, 
   Package, 
   ShoppingCart, 
-  TrendingUp, 
   Users, 
-  Settings,
-  Eye,
   Plus,
   DollarSign,
   AlertCircle,
@@ -25,110 +21,7 @@ interface DashboardProps {
 export default function Dashboard({ onNavigate }: DashboardProps) {
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-950 via-purple-950 to-slate-950">
-      {/* Animated Background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(139,92,246,0.1),transparent_50%)]" />
-        <motion.div
-          className="absolute top-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"
-          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-          transition={{ duration: 8, repeat: Infinity }}
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8b5cf608_1px,transparent_1px),linear-gradient(to_bottom,#8b5cf608_1px,transparent_1px)] bg-size-[4rem_4rem]" />
-      </div>
-
-      {/* Header */}
-      <header className="relative border-b border-white/10 backdrop-blur-xl bg-slate-900/50">
-        <div className="px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="relative">
-              <Store className="w-7 h-7 text-purple-400" />
-              <motion.div
-                className="absolute inset-0 bg-purple-500/50 blur-lg"
-                animate={{ opacity: [0.5, 1, 0.5] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-            </div>
-            <span className="text-xl font-bold bg-linear-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
-              MiTienda
-            </span>
-          </div>
-          <div className="flex items-center gap-4">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onNavigate("store")}
-              className="border-white/20 text-white hover:bg-white/10"
-            >
-              <Eye className="w-4 h-4 mr-2" />
-              Ver tienda
-            </Button>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-linear-to-r from-purple-600 to-cyan-600 flex items-center justify-center text-white text-sm font-semibold">
-                MG
-              </div>
-              <span className="text-sm font-medium text-white">Mi Tienda Online</span>
-            </div>
-          </div>
-        </div>
-      </header>
-
       <div className="relative flex">
-        {/* Sidebar */}
-        <aside className="w-64 border-r border-white/10 min-h-[calc(100vh-65px)] backdrop-blur-xl bg-slate-900/30">
-          <nav className="p-4 space-y-1">
-            <a
-              href="#"
-              className="flex items-center gap-3 px-3 py-2 rounded-lg bg-linear-to-r from-purple-600/20 to-cyan-600/20 border border-purple-500/30 text-purple-300 font-medium"
-            >
-              <TrendingUp className="w-5 h-5" />
-              Dashboard
-            </a>
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                onNavigate("products");
-              }}
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:bg-white/5 transition-colors"
-            >
-              <Package className="w-5 h-5" />
-              Productos
-            </a>
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                onNavigate("templates");
-              }}
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:bg-white/5 transition-colors"
-            >
-              <Sparkles className="w-5 h-5" />
-              Plantillas IA
-            </a>
-            <a
-              href="#"
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:bg-white/5 transition-colors"
-            >
-              <ShoppingCart className="w-5 h-5" />
-              Pedidos
-            </a>
-            <a
-              href="#"
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:bg-white/5 transition-colors"
-            >
-              <Users className="w-5 h-5" />
-              Clientes
-            </a>
-            <a
-              href="#"
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:bg-white/5 transition-colors"
-            >
-              <Settings className="w-5 h-5" />
-              Configuración
-            </a>
-          </nav>
-        </aside>
-
         {/* Main Content */}
         <main className="flex-1 p-8">
           {/* Welcome Banner */}

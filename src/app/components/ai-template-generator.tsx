@@ -8,9 +8,7 @@ import { Textarea } from "./ui/textarea";
 import {
   Sparkles,
   Wand2,
-  Store,
   Palette,
-  Layout,
   Zap,
   ArrowLeft,
   Download,
@@ -204,11 +202,6 @@ export default function AITemplateGenerator({ onNavigate }: AITemplateGeneratorP
               <span className="text-xl font-bold bg-linear-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
                 AI Template Generator
               </span>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="px-3 py-1 rounded-full bg-linear-to-r from-purple-500/20 to-cyan-500/20 border border-purple-500/30 text-purple-300 text-sm">
-              ✨ Powered by AI
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
-import { Store, ShoppingCart, TrendingUp, Palette, CreditCard, BarChart3, Globe, Lock, Sparkles, Zap, Rocket } from "lucide-react";
+import { Store, ShoppingCart, TrendingUp, Palette, CreditCard, BarChart3, Globe, Lock, Sparkles, Rocket, YoutubeIcon } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { motion } from "framer-motion";
 
@@ -106,8 +106,8 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
               </motion.div>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button size="lg" variant="outline" className="text-lg px-8 border-white/20 text-white hover:bg-white/10">
-                  <Zap className="w-5 h-5 mr-2" />
-                  Ver demo
+                  <YoutubeIcon className="w-5 h-5 mr-2" />
+                  Ver video
                 </Button>
               </motion.div>
             </div>

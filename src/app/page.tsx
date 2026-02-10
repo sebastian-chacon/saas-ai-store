@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useState } from "react";
 import { Toaster } from "./components/ui/sonner";
 import AITemplateGenerator from "./components/ai-template-generator";
@@ -6,33 +6,44 @@ import StorePreview from "./components/store-preview";
 import ProductManager from "./components/product-manager";
 import Dashboard from "./components/dashboard";
 import LandingPage from "./components/landing-page";
+import BackgroundLayout from "./components/ui/background-layout";
+import GlobalNav from "./components/ui/global-nav";
 
 type View = "landing" | "dashboard" | "products" | "store" | "templates";
 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>("landing");
 
-  const renderView = () => {
-    switch (currentView) {
-      case "landing":
-        return <LandingPage onGetStarted={() => setCurrentView("dashboard")} />;
-      case "dashboard":
-        return <Dashboard onNavigate={setCurrentView} />;
-      case "products":
-        return <ProductManager onNavigate={setCurrentView} />;
-      case "store":
-        return <StorePreview onNavigate={setCurrentView} />;
-      case "templates":
-        return <AITemplateGenerator onNavigate={setCurrentView} />;
-      default:
-        return <LandingPage onGetStarted={() => setCurrentView("dashboard")} />;
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-slate-950">
-      {renderView()}
-      <Toaster />
-    </div>
+    <BackgroundLayout>
+      <GlobalNav currentView={currentView} onNavigate={setCurrentView}>
+        {currentView === "landing" && (
+          <LandingPage onGetStarted={() => setCurrentView("dashboard")} />
+        )}
+        {currentView === "dashboard" && (
+          <Dashboard onNavigate={setCurrentView} />
+        )}
+        {currentView === "products" && (
+          <ProductManager onNavigate={setCurrentView} />
+        )}
+        {currentView === "store" && (
+          <StorePreview onNavigate={setCurrentView} />
+        )}
+        {currentView === "templates" && (
+          <AITemplateGenerator onNavigate={setCurrentView} />
+        )}
+        {/* ... otros views */}
+      </GlobalNav>
+      <Toaster
+        toastOptions={{
+          style: {
+            background: "rgba(15, 23, 42, 0.8)",
+            backdropFilter: "blur(8px)", 
+            border: "1px solid rgba(255, 255, 255, 0.1)",
+            color: "#fff",
+          },
+        }}
+      />
+    </BackgroundLayout>
   );
 }

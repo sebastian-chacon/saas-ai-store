@@ -1,113 +1,126 @@
 "use client";
 
 import * as React from "react";
+import { createPortal } from "react-dom";
 import { XIcon } from "lucide-react";
 import { cn } from "./utils";
 
-// --- Tipado para soportar estado controlado ---
+interface DialogContextProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+const DialogContext = React.createContext<DialogContextProps | null>(null);
+
 interface DialogProps {
   children: React.ReactNode;
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
 function Dialog({ children, open, onOpenChange }: DialogProps) {
-  const dialogRef = React.useRef<HTMLDialogElement>(null);
+  return (
+    <DialogContext.Provider value={{ open, onOpenChange }}>
+      {children}
+    </DialogContext.Provider>
+  );
+}
 
-  // Sincroniza el estado de React con el elemento <dialog> nativo
+function DialogContent({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const context = React.useContext(DialogContext);
+  if (!context) return null;
+
+  const { open, onOpenChange } = context;
+
   React.useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onOpenChange(false);
+      }
+    };
 
     if (open) {
-      if (!dialog.open) dialog.showModal();
-    } else {
-      if (dialog.open) dialog.close();
+      document.addEventListener("keydown", handleEsc);
+      document.body.style.overflow = "hidden";
     }
-  }, [open]);
 
-  // Pasamos el ref y el estado a los hijos mediante clonación
-  return (
-    <div data-slot="dialog">
-      {React.Children.map(children, (child) =>
-        React.isValidElement(child)
-          ? React.cloneElement(child as React.ReactElement<any>, { 
-              dialogRef, 
-              open, 
-              onOpenChange 
-            })
-          : child
-      )}
-    </div>
-  );
-}
+    return () => {
+      document.removeEventListener("keydown", handleEsc);
+      document.body.style.overflow = "";
+    };
+  }, [open, onOpenChange]);
 
-// --- Trigger (Opcional si usas el estado open manualmente) ---
-function DialogTrigger({ children, dialogRef }: any) {
-  if (!React.isValidElement(children)) return null;
-  return React.cloneElement(children as React.ReactElement<any>, {
-    onClick: () => dialogRef?.current?.showModal(),
-  });
-}
+  if (!open) return null;
 
-function DialogContent({ 
-  className, 
-  children, 
-  dialogRef, 
-  onOpenChange, 
-  ...props 
-}: any) {
-  return (
-    <dialog
-      ref={dialogRef}
-      onClose={() => onOpenChange?.(false)}
-      className={cn(
-        "bg-background fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border p-6 shadow-lg sm:max-w-lg outline-none",
-        "backdrop:bg-black/50 backdrop:backdrop-blur-sm",
-        "open:animate-in open:fade-in-0 open:zoom-in-95 duration-200",
-        className
-      )}
-      onClick={(e) => {
-        // Cierre al hacer click en el overlay (backdrop)
-        if (e.target === dialogRef?.current) onOpenChange?.(false);
-      }}
-      {...props}
-    >
-      {children}
-      <button
-        onClick={() => onOpenChange?.(false)}
-        className="absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+  return createPortal(
+    <div className="fixed text-black inset-0 z-50 flex items-center justify-center">
+      
+      {/* Overlay */}
+      <div
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        onClick={() => onOpenChange(false)}
+      />
+
+      {/* Content */}
+      <div
+        className={cn(
+          "relative z-50 w-full max-w-lg rounded-lg bg-white p-6 shadow-lg animate-in fade-in zoom-in-95",
+          className
+        )}
       >
-        <XIcon className="size-4" />
-        <span className="sr-only">Close</span>
-      </button>
-    </dialog>
+        {children}
+
+        <button
+          onClick={() => onOpenChange(false)}
+          className="absolute right-4 top-4 opacity-70 hover:opacity-100"
+        >
+          <XIcon className="size-4" />
+        </button>
+      </div>
+    </div>,
+    document.body
   );
 }
 
-// --- Subcomponentes de apoyo ---
-const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn("flex flex-col gap-2 text-center sm:text-left", className)} {...props} />
+const DialogHeader = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div className={cn("flex flex-col gap-2", className)} {...props} />
 );
 
-const DialogTitle = ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
-  <h2 className={cn("text-lg leading-none font-semibold", className)} {...props} />
+const DialogTitle = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLHeadingElement>) => (
+  <h2 className={cn("text-lg font-semibold", className)} {...props} />
 );
 
-const DialogDescription = ({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => (
-  <p className={cn("text-muted-foreground text-sm", className)} {...props} />
+const DialogDescription = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLParagraphElement>) => (
+  <p className={cn("text-sm text-gray-500", className)} {...props} />
 );
 
-const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end", className)} {...props} />
+const DialogFooter = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div className={cn("flex justify-end gap-2 mt-4", className)} {...props} />
 );
 
 export {
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogHeader,
-  DialogFooter,
   DialogTitle,
   DialogDescription,
+  DialogFooter,
 };
