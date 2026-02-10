@@ -8,8 +8,10 @@ import Dashboard from "./components/dashboard";
 import LandingPage from "./components/landing-page";
 import BackgroundLayout from "./components/ui/background-layout";
 import GlobalNav from "./components/ui/global-nav";
+import CustomerManager from "./components/CustomerManager";
+import OrderManager from "./components/OrderManager";
 
-type View = "landing" | "dashboard" | "products" | "store" | "templates";
+type View = "landing" | "dashboard" | "products" | "store" | "templates" | "customers" | "orders" | "settings";
 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>("landing");
@@ -31,6 +33,12 @@ export default function App() {
         )}
         {currentView === "templates" && (
           <AITemplateGenerator onNavigate={setCurrentView} />
+        )}
+        {currentView === "customers" && (
+          <CustomerManager onNavigate={setCurrentView} />
+        )}
+        {currentView === "orders" && (
+          <OrderManager onNavigate={setCurrentView} />
         )}
         {/* ... otros views */}
       </GlobalNav>

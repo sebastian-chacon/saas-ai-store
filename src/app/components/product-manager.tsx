@@ -24,10 +24,10 @@ import {
   DollarSign,
   Box,
 } from "lucide-react";
-import { toast } from "sonner"; // Usamos la función toast que alimentará a tu Toaster personalizado
+import { toast } from "sonner"; 
 import { motion, AnimatePresence } from "framer-motion";
 
-type View = "landing" | "dashboard" | "products" | "store" | "templates";
+type View = "landing" | "dashboard" | "products" | "store" | "templates" | "customers" | "orders";
 
 interface Product {
   id: number;

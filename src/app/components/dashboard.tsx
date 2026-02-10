@@ -12,7 +12,7 @@ import {
   Palette
 } from "lucide-react";
 
-type View = "landing" | "dashboard" | "products" | "store" | "templates";
+type View = "landing" | "dashboard" | "products" | "store" | "templates" | "customers" | "orders";
 
 interface DashboardProps {
   onNavigate: (view: View) => void;
