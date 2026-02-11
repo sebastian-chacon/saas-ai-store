@@ -10,6 +10,7 @@ import BackgroundLayout from "@/components/ui/background-layout";
 import GlobalNav from "@/components/ui/global-nav";
 import CustomerManager from "@/components/customer-manager";
 import OrderManager from "@/components/order-manager";
+import StoreSettings from "@/components/StoreSettings";
 
 type View = "landing" | "dashboard" | "products" | "store" | "templates" | "customers" | "orders" | "settings";
 
@@ -39,6 +40,9 @@ export default function App() {
         )}
         {currentView === "orders" && (
           <OrderManager onNavigate={setCurrentView} />
+        )}
+        {currentView === "settings" && (
+          <StoreSettings onNavigate={setCurrentView} />
         )}
         {/* ... otros views */}
       </GlobalNav>

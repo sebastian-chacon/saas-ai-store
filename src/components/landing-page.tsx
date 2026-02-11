@@ -1,15 +1,18 @@
+import { useState } from "react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
-import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
-import { Store, ShoppingCart, TrendingUp, Palette, CreditCard, BarChart3, Globe, Lock, Sparkles, Rocket, YoutubeIcon, Menu } from "lucide-react";
+
+import { Store, ShoppingCart, TrendingUp, Palette, CreditCard, BarChart3, Globe, Lock, Sparkles, Rocket, YoutubeIcon, Menu, X } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface LandingPageProps {
   onGetStarted: () => void;
 }
 
 export default function LandingPage({ onGetStarted }: LandingPageProps) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-950 via-purple-950 to-slate-950">
       {/* Animated Background */}
@@ -35,25 +38,36 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
       </div>
 
       {/* Header */}
-      <header className="relative border-b border-white/10 backdrop-blur-xl bg-slate-900/30">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-2"
-          >
-            <div className="relative">
-              <Store className="w-8 h-8 text-purple-400" />
-              <motion.div
-                className="absolute inset-0 bg-purple-500/50 blur-lg"
-                animate={{ opacity: [0.5, 1, 0.5] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-            </div>
-            <span className="text-2xl font-bold bg-linear-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
-              MiTienda
-            </span>
-          </motion.div>
+      {/* Header */}
+      <header className="relative border-b border-white/10 backdrop-blur-xl bg-slate-900/30 z-50">
+        <div className={`container mx-auto px-4 py-4 flex items-center justify-between transition-opacity duration-200 ${isSidebarOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+          <div className="flex items-center gap-3">
+            {/* Mobile Menu Button - Left Aligned */}
+            <button
+              onClick={() => setIsSidebarOpen(true)}
+              className="p-2 -ml-2 text-slate-400 hover:text-white md:hidden"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="flex items-center gap-2"
+            >
+              <div className="relative">
+                <Store className="w-8 h-8 text-purple-400" />
+                <motion.div
+                  className="absolute inset-0 bg-purple-500/50 blur-lg"
+                  animate={{ opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+              </div>
+              <span className="text-2xl font-bold bg-linear-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                MiTienda
+              </span>
+            </motion.div>
+          </div>
+
           <nav className="hidden md:flex items-center gap-8">
             <a href="#features" className="text-slate-300 hover:text-white transition-colors">Características</a>
             <a href="#pricing" className="text-slate-300 hover:text-white transition-colors">Precios</a>
@@ -61,38 +75,6 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
           </nav>
 
           <div className="flex items-center gap-3">
-            {/* Mobile Menu */}
-            <div className="md:hidden">
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="ghost" className="text-white hover:bg-white/10" size="icon">
-                    <Menu className="w-6 h-6" />
-                    <span className="sr-only">Menú</span>
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="right" className="w-[300px] border-l border-white/10 bg-slate-950/80 backdrop-blur-xl p-6">
-                  <SheetTitle className="text-left text-xl font-bold bg-linear-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent mb-8">
-                    MiTienda
-                  </SheetTitle>
-                  <div className="flex flex-col gap-6">
-                    <nav className="flex flex-col gap-4">
-                      <a href="#features" className="text-lg text-slate-300 hover:text-white transition-colors">Características</a>
-                      <a href="#pricing" className="text-lg text-slate-300 hover:text-white transition-colors">Precios</a>
-                      <a href="#templates" className="text-lg text-slate-300 hover:text-white transition-colors">Plantillas</a>
-                    </nav>
-                    <div className="flex flex-col gap-4 mt-4">
-                      <Button variant="ghost" className="justify-start text-white hover:bg-white/10 px-0">
-                        Iniciar sesión
-                      </Button>
-                      <Button onClick={onGetStarted} className="bg-linear-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 shadow-lg shadow-purple-500/50">
-                        Comenzar gratis
-                      </Button>
-                    </div>
-                  </div>
-                </SheetContent>
-              </Sheet>
-            </div>
-
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -106,6 +88,80 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
           </div>
         </div>
       </header>
+
+      {/* Custom Sidebar (Mobile) - Moved to root level */}
+      <AnimatePresence>
+        {isSidebarOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsSidebarOpen(false)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[90] md:hidden"
+            />
+            <motion.aside
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed inset-y-0 left-0 w-72 bg-slate-900 border-r border-white/10 z-[100] md:hidden p-6 shadow-2xl overflow-y-auto"
+            >
+              <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center gap-2">
+                  <Store className="w-6 h-6 text-purple-400" />
+                  <span className="font-bold text-white text-xl">MiTienda</span>
+                </div>
+                <button
+                  onClick={() => setIsSidebarOpen(false)}
+                  className="p-2 text-slate-400 hover:text-white rounded-full hover:bg-white/5 transition-colors"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              <nav className="flex flex-col gap-2">
+                <a
+                  href="#features"
+                  onClick={() => setIsSidebarOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-white/5 hover:text-white transition-all font-medium"
+                >
+                  Características
+                </a>
+                <a
+                  href="#pricing"
+                  onClick={() => setIsSidebarOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-white/5 hover:text-white transition-all font-medium"
+                >
+                  Precios
+                </a>
+                <a
+                  href="#templates"
+                  onClick={() => setIsSidebarOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-white/5 hover:text-white transition-all font-medium"
+                >
+                  Plantillas
+                </a>
+              </nav>
+
+              <div className="mt-8 pt-8 border-t border-white/10 flex flex-col gap-4">
+                <Button variant="ghost" className="justify-start text-white hover:bg-white/10 px-4 rounded-xl h-12">
+                  Iniciar sesión
+                </Button>
+                <Button
+                  onClick={() => {
+                    onGetStarted();
+                    setIsSidebarOpen(false);
+                  }}
+                  className="bg-linear-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 shadow-lg shadow-purple-500/50 h-12 rounded-xl font-bold"
+                >
+                  Comenzar gratis
+                </Button>
+              </div>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* Hero Section */}
       <section className="relative container mx-auto px-4 py-20">
