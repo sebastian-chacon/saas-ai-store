@@ -11,13 +11,29 @@ import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 import { toast } from "sonner";
 import AppearanceSection from "./AppearanceSection";
+import TemplateSelector from "./TemplateSelector";
 
 export default function StoreSettings({ onNavigate }: { onNavigate: (view: any) => void }) {
   const [activeTab, setActiveTab] = useState("general");
   const [isSaving, setIsSaving] = useState(false);
 
+
+  const [storeConfig, setStoreConfig] = useState({
+    name: "Mi Tienda Online",
+    templateId: "premium-tech", // Template por defecto
+    // Aquí podrías guardar el resto de la config que viene de AppearanceSection
+  });
+
+  const handleTemplateSelect = (id: string) => {
+    setStoreConfig(prev => ({ ...prev, templateId: id }));
+    toast.success(`Plantilla ${id} seleccionada`);
+    // Opcional: Saltar automáticamente a apariencia
+    // setActiveTab("appearance"); 
+  };
+  
   const menuItems = [
     { id: "general", label: "General", icon: Store },
+    { id: "TeampleSelector", label: "Seleccionar Teample", icon: Shield },
     { id: "appearance", label: "Apariencia", icon: Palette },
     { id: "payments", label: "Pagos", icon: CreditCard },
     { id: "notifications", label: "Notificaciones", icon: Bell },
@@ -136,6 +152,11 @@ export default function StoreSettings({ onNavigate }: { onNavigate: (view: any) 
                     </div>
                   </div>
                 </Card>
+              </motion.div>
+            )}
+            {activeTab === "TeampleSelector" && (
+              <motion.div key="TeampleSelector" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                <TemplateSelector />
               </motion.div>
             )}
 

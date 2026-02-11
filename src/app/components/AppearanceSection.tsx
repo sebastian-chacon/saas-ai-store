@@ -346,7 +346,7 @@ export default function AppearanceSection() {
                   </button>
                 </section>
 
-                <section className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <section className={`p-6 grid ${previewDevice === 'desktop' ? 'grid-cols-3' : 'grid-cols-2'} gap-4`}>
                   {[1, 2, 3].map((i) => (
                     <div key={i}
                       className="p-4 border border-white/5 group"
